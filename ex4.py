@@ -8,6 +8,7 @@ Created on Sun Sep 27 13:07:03 2020
 """
 
 import numpy as np
+from util import *
 from scipy.io import loadmat
 from scipy.optimize import fmin_cg
 from sklearn.neural_network import MLPClassifier
@@ -61,13 +62,6 @@ def nnGradFunc(nn_params, input_size, hidden_size, num_labels, X, y, lam):
 
     grad = np.hstack([Theta1_grad.ravel(), Theta2_grad.ravel()])
     return grad
-
-
-def randInitWe(x, y):
-    """Randomly initialize weights."""
-    eps = 1.e-4
-    W = 2*eps*np.random.randn(x, y) - 2*eps
-    return W
 
 
 def predict(Theta1, Theta2, X):

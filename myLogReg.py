@@ -12,7 +12,7 @@ from scipy.optimize import fmin_cg
 import matplotlib.pyplot as plt
 
 
-def costFunc(theta, X, y, lam):
+def costFunc(theta, X, y, lam=0):
     """Compute cost for logistic regression w/ regularization."""
     m, n = X.shape
     theta = theta.reshape([n, 1])
@@ -24,7 +24,7 @@ def costFunc(theta, X, y, lam):
     return J
 
 
-def gradFunc(theta, X, y, lam):
+def gradFunc(theta, X, y, lam=0):
     """Compute gradient for logistic regression w/ regularization."""
     m, n = X.shape
     theta = theta.reshape([n, 1])

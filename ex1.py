@@ -10,6 +10,7 @@ Created on Sat Sep 19 15:03:12 2020
 import numpy as np
 import matplotlib.pyplot as plt
 import myLinReg as my
+from util import *
 from sklearn.linear_model import LinearRegression
 from sklearn.metrics import mean_squared_error
 
@@ -31,12 +32,12 @@ def runGradDesc(FN, alpha, num_iters):
 
     # Scale features for multivariate case
     if n > 1:
-        X_norm, _, _ = my.featureNormalize(X)
+        X_norm, _, _ = featureNormalize(X)
     else:
         X_norm = X
 
     # Add intercept term to X
-    X_norm = np.hstack((np.ones([m, 1]), X_norm))
+    X_norm = addOnes(X_norm)
 
     # Initialize theta
     theta = np.zeros([n+1, 1])
@@ -70,7 +71,7 @@ test = [3.5, 7]
 
 for n in range(2):
     # Estimate the profit for population of 3.5k and 7k
-    profit = my.estimate(np.array([[test[n]]]), theta, 0, 1)
+    profit = my.predict(np.array([[test[n]]]), theta, 0, 1)
     show = np.array([test[n], profit])*10000
     print('For population = %d, we predict a profit of $%0.2f' % tuple(show))
 
@@ -97,8 +98,8 @@ X, y, theta, J_hist = runGradDesc(FN2, 0.01, 400)
 
 # Estimate the price of a 1650 sq-ft, 3 br house
 test = [1650, 3]
-X_norm, mu, sigma = my.featureNormalize(X)
-price = my.estimate(np.array([test]), theta, mu, sigma)
+X_norm, mu, sigma = featureNormalize(X)
+price = my.predict(np.array([test]), theta, mu, sigma)
 test.append(price)
 
 print('Predicted price of a %d sq-ft, %d br house (using gradient descent): \
