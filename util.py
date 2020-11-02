@@ -8,6 +8,15 @@ Created on Wed Oct 28 20:46:45 2020
 import numpy as np
 import matplotlib.pyplot as plt
 
+
+def plotData(X, y):
+    """Plot data points."""
+    pos = (y == 1).flatten()
+    neg = (y == 0).flatten()
+    plt.plot(X[pos, 0], X[pos, 1], 'k+')
+    plt.plot(X[neg, 0], X[neg, 1], 'ko')
+    
+
 def featureNormalize(X):
     """Normalize features."""
     mu = np.mean(X, 0)
