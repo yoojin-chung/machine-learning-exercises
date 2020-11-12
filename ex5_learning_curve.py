@@ -1,5 +1,8 @@
 # -*- coding: utf-8 -*-
 """
+A Ng Machine Learning Week6 exercise.
+
+Run linear regression with regularization & evaluate learning curves
 Created on Wed Oct 28 14:22:53 2020
 
 @author: yooji

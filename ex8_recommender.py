@@ -1,7 +1,9 @@
 # -*- coding: utf-8 -*-
 """
-Created on Mon Oct  5 20:56:52 2020
+A Ng Machine Learning Week9 exercise.
 
+Movie recommender systtem using collaborative filtering
+Created on Mon Oct  5 20:56:52 2020
 @author: yooji
 """
 
