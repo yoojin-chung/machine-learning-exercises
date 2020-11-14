@@ -66,3 +66,8 @@ def divideTrainSet(X, y, frac=0.8):
     Xval = X[ind[int(m*frac)]:]
     yval = y[ind[int(m*frac)]:]
     return Xtrain, ytrain, Xval, yval
+
+
+def drawLine(p1, p2, opt=None):
+    plt.plot([p1[0], p2[0]], [p1[1], p2[1]], opt)
+    

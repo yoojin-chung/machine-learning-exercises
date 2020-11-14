@@ -183,10 +183,10 @@ movie_data = list(zip(ind, title, year))
 DF = pd.DataFrame(movie_data, columns=['ID', 'Title', 'Year'])
 
 # %% Load saved ratings
-fp = open('my_ratings.pkl', 'rb')
+fp = open('archive\\my_ratings.pkl', 'rb')
 my_ratings = pickle.load(fp)
 fp.close()
-my_ratings = my_ratings.reshape(len(my_ratings), 1)
+my_ratings = my_ratings.reshape(-1, 1)
 showRatings(my_ratings, DF)
 
 # %% Ratings from the tutorial

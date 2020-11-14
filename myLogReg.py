@@ -82,8 +82,10 @@ def predictOnevsAll(all_theta, X):
     return p
 
 
-def displayData(X, width):
+def displayData(X, width=None, ax=None):
     """Display 2D data in a grid."""
+    if width is None:
+        width = int(np.sqrt(X.shape[1]))
     m, n = X.shape
     height = int(n / width)
     disp_rows = int(np.floor(np.sqrt(m)))
@@ -107,6 +109,8 @@ def displayData(X, width):
             cnt += 1
     disp_array = disp_array.T
 
-    plt.figure()
-    plt.imshow(disp_array)
+    if ax is None:
+        plt.figure()
+        ax = plt.gca()
+    ax.imshow(disp_array)
     return disp_array
