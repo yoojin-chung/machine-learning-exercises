@@ -9,7 +9,7 @@ Created on Wed Sep 23 11:57:51 2020
 
 import numpy as np
 from scipy.optimize import fmin_cg
-import matplotlib.pyplot as plt
+import util
 
 
 def costFunc(theta, X, y, lam=0):
@@ -53,7 +53,7 @@ def predict(theta, X):
     return p
 
 
-def onevsAll(X, y, num_labels, lam):
+def onevsAll(X, y, num_labels, lam, maxiter=200):
     """
     Train multiple logistic regression classifiers.
 
@@ -69,7 +69,7 @@ def onevsAll(X, y, num_labels, lam):
                         theta_init,
                         gradFunc,
                         args=(X, y == k, lam),
-                        maxiter=200)
+                        maxiter=maxiter)
         all_theta[k, :] = theta
     return all_theta
 
@@ -83,34 +83,39 @@ def predictOnevsAll(all_theta, X):
 
 
 def displayData(X, width=None, ax=None):
-    """Display 2D data in a grid."""
-    if width is None:
-        width = int(np.sqrt(X.shape[1]))
-    m, n = X.shape
-    height = int(n / width)
-    disp_rows = int(np.floor(np.sqrt(m)))
-    disp_cols = int(np.ceil(m / disp_rows))
-    pad = 1
+    """displayData moved to util."""
+    util.displayData(X, width=None, ax=None)
+    print("displayData has been moved to util.py\n")
+#     """Display 2D data in a grid."""
+#     if width is None:
+#         width = int(np.sqrt(X.shape[1]))
+#     m, n = X.shape
+#     height = int(n / width)
+#     disp_rows = int(np.floor(np.sqrt(m)))
+#     disp_cols = int(np.ceil(m / disp_rows))
+#     pad = 1
 
-    disp_array = np.ones([pad + disp_rows * (height + pad),
-                          pad + disp_cols * (width + pad)])
-    cnt = 0
+#     disp_array = np.ones([pad + disp_rows * (height + pad),
+#                           pad + disp_cols * (width + pad)])
+#     cnt = 0
 
-    for j in range(disp_rows):
-        for i in range(disp_cols):
-            if cnt >= m:
-                break
-            max_val = max(abs(X[cnt, :]))
-            h_start = pad + j * (height + pad)
-            w_start = pad + i * (width + pad)
+#     for j in range(disp_rows):
+#         for i in range(disp_cols):
+#             if cnt >= m:
+#                 break
+#             max_val = max(abs(X[cnt, :]))
+#             h_start = pad + j * (height + pad)
+#             w_start = pad + i * (width + pad)
 
-            disp_array[h_start:h_start + height, w_start:w_start + width] =\
-                X[cnt, :].reshape(height, width) / max_val
-            cnt += 1
-    disp_array = disp_array.T
+#             disp_array[h_start:h_start + height, w_start:w_start + width] =\
+#                 X[cnt, :].reshape(height, width) / max_val
+#             cnt += 1
+#     disp_array = disp_array.T
 
-    if ax is None:
-        plt.figure()
-        ax = plt.gca()
-    ax.imshow(disp_array)
-    return disp_array
+#     if ax is None:
+#         plt.figure()
+#         ax = plt.gca()
+#     ax.imshow(disp_array)
+#     ax.set_xticklabels([])
+#     ax.set_yticklabels([])
+#     return disp_array

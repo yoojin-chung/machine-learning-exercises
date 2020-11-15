@@ -90,8 +90,8 @@ plotDecisionBoundary(X, clf, True)
 
 # Test a range of C and gamma
 Xtrain, ytrain, Xval, yval = util.divideTrainSet(X, y)
-C_set = np.asarray([0.3, 1, 3, 10])
-sigma_set = np.asarray([0.01, 0.03, 0.1, 0.3, 1])
+C_set = np.array([0.3, 1, 3, 10])
+sigma_set = np.array([0.01, 0.03, 0.1, 0.3, 1])
 gridEvalParams(Xtrain, ytrain, Xval, yval, C_set, sigma_set)
 
 # %% Load and train dataset 3 with RBF kernel

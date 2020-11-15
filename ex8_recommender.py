@@ -58,14 +58,14 @@ def compNumericalGrad(costFunc, theta):
     return numgrad
 
 
-def newUserRating(DF):
+def newUserRating(DF, Ymean):
     """Get ratings from a new user."""
     cnt = 0
     my_ratings = np.zeros(len(DF))
     # ind_rate = np.random.permutation(len(DF))
     ind_rate = np.argsort(Ymean)[::-1]
     
-    for i, ind in enumerate(ind_rate):
+    for ind in ind_rate:
         print(DF.Title[ind], '\nYear:', DF.Year[ind])
         rate = input('Your rating? [1-5]:\n')
         if rate:

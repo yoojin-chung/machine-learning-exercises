@@ -27,7 +27,6 @@ ytest = data['ytest']
 Xval = data['Xval']
 yval = data['yval']
 
-
 # %%
 # Number of examples
 m = len(X)
@@ -49,13 +48,18 @@ grad = my.computeGrad(theta, X0, y, 1)
 print("Gradient at theta [1, 1]: %f, %f:\
       \n(this value should be about [-15.303016; 598.250744])\n" % tuple(grad))
 
+wait = input('Program paused. Press enter to continue.\n')
+
 # %%
 # Train linear regression and see the result
 lam = 0
 theta = my.trainLinearReg(X0, y, lam)
 plt.scatter(X, X0.dot(theta), marker='o')
 
-# Plot learning curve for linear regression
+plt.show()
+wait = input('Program paused. Press enter to continue.\n')
+
+# %% Plot learning curve for linear regression
 error_train, error_val = my.learningCurve(X, y, Xval, yval, lam)
 
 fig = plt.figure()
@@ -65,6 +69,9 @@ plt.title('Learning curve for linear regression')
 plt.legend(['Train', 'Cross Validation'])
 plt.xlabel('Number of training examples')
 plt.ylabel('Error')
+
+plt.show()
+wait = input('Program paused. Press enter to continue.\n')
 
 # %%
 p = 8
@@ -91,6 +98,7 @@ plt.plot(X_pred, y_pred)
 plt.xlabel('Change in water level (x)')
 plt.ylabel('Water flowing out of the dam (y)')
 plt.title('Polynomial Regression Fit (lambda = %0.2f)' % lam)
+plt.show()
 
 error_train, error_val =\
     my.learningCurve(X_poly, y, X_poly_val, yval, lam)
@@ -102,10 +110,13 @@ plt.title('Polynomial Regression Learning Curve (lambda = %0.2f)' % lam)
 plt.legend(['Train', 'Cross Validation'])
 plt.xlabel('Number of training examples')
 plt.ylabel('Error')
+plt.show()
 
 print('# Training examples | Training error | Validation error:')
 for n in range(m):
     print('%0.0f | %0.4f | %0.4f' % (n+1, error_train[n], error_val[n]))
+
+wait = input('Program paused. Press enter to continue.\n')
 
 # %%
 lambda_vec = np.array([0, 0.001, 0.003, 0.01, 0.03, 0.1, 0.3, 1, 3, 10])
@@ -119,6 +130,7 @@ plt.legend(['Train', 'Cross Validation'])
 plt.xlabel('lambda')
 plt.ylabel('Error')
 #plt.xscale('log')
+plt.show()
 
 print('Lambda | Training error | Validation error:')
 for n in range(len(lambda_vec)):

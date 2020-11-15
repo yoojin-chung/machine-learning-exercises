@@ -35,8 +35,8 @@ def computeCentroids(X, idx, K):
 
 def runkMeans(X, initial_centroids, max_iters, plot_progress=False):
     """Run the K-Means algorithm on data matrix X."""
-    if plot_progress:
-        plt.figure()
+    # if plot_progress:
+    #     plt.figure(figsize=(8, 6))
     m, n = X.shape
     K, d = initial_centroids.shape
     centroids = initial_centroids
@@ -49,26 +49,21 @@ def runkMeans(X, initial_centroids, max_iters, plot_progress=False):
         if plot_progress:
             plotProgresskMeans(X, centroids, previous_centroids, idx, K, i)
             previous_centroids = centroids
-#            wait = input('Press enter to continue.')
+            # plt.show()
+            # wait = input('Press enter to continue.')
         centroids = computeCentroids(X, idx, K)
     return centroids, idx
 
 
 def plotProgresskMeans(X, centroids, previous, idx, K, i):
     """Display the progress of k-Means as it is running."""
-    plotDataPoints(X, idx)
+    util.plotDataPoints(X, idx)
     plt.plot(centroids[:, 0], centroids[:, 1], 'kx')
     for j in range(len(centroids)):
         # plt.plot([centroids[j, 0], previous[j, 0]],
         #          [centroids[j, 1], previous[j, 1]], 'k')
         util.drawLine(centroids[j, :], previous[j, :], 'k')
     plt.title('Iteration number %d' % (i+1))
-
-
-def plotDataPoints(X, idx):
-    """Display the progress of k-Means as it is running."""
-    # Plot the data
-    sns.scatterplot(x=X[:, 0], y=X[:, 1], hue=idx, legend=False)
 
 
 def kMeansInitCentroids(X, K):

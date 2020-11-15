@@ -48,7 +48,7 @@ def processEmail(email_contents):
 
     vocabList = getVocabList()
     word_indices = []
-    for n, word in enumerate(email_contents):
+    for word in email_contents:
         ind = vocabList[vocabList.vocab == word].index
         if ind.any():
             word_indices.append(ind[0])
@@ -77,6 +77,7 @@ features = emailFeatures(word_indices)
 
 print('\nLength of feature vector: %d' % features.size)
 print('Number of non-zero entries: %d\n' % np.sum(features > 0))
+wait = input("Program paused. Press enter to continue.\n")
 
 # %% Part 3: Train Linear SVM for Spam Classification
 FN = 'spamTrain.mat'
@@ -86,25 +87,27 @@ y = data['y']
 y = y.reshape(-1, )
 clf = svm.SVC(kernel='linear', C=0.1)
 clf.fit(X, y)
+wait = input("Program paused. Press enter to continue.\n")
 
 # %% Part 4: Test Spam Classification
 FN = 'spamTest.mat'
 data = loadmat(os.path.join(folder, FN))
 Xtest = data['Xtest']
 ytest = data['ytest']
-ytest = ytest.reshape(-1, )
+ytest = ytest.reshape(-1)
 
 p = clf.predict(Xtest)
 print('Test Accuracy: %f' % np.mean(p == ytest))
+wait = input("Program paused. Press enter to continue.\n")
 
 # %% Part 5: Top Predictors of Spam
 vocab = getVocabList()
-we = clf.coef_
-idx = np.argsort(we*-1)
-idx = idx.reshape(-1,)
+we = clf.coef_.reshape(-1)
+idx = np.argsort(we)[::-1]
 
 print('Top predictors of spam:')
 print(vocab.iloc[idx[:15]])
+wait = input("Program paused. Press enter to continue.\n")
 
 # %% Part 6: Try Your Own Emails
 FN = 'emailSample3.txt'

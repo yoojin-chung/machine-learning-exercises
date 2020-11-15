@@ -9,9 +9,10 @@ Created on Sat Sep 26 15:13:12 2020
 
 import numpy as np
 import matplotlib.pyplot as plt
-from util import *
 from scipy.optimize import fmin_bfgs
-from myLogReg import costFunc, gradFunc, predict
+from sklearn.linear_model import LogisticRegression
+import util
+import myLogReg
 
 
 def mapFeature(X1, X2):
@@ -24,9 +25,9 @@ def mapFeature(X1, X2):
     return out
 
 
-def plotDecisionBoundary(theta, X, y):
+def plotDecisionBoundary(theta, X, y, lam):
     """Plot the data points & decision boundary defined by theta."""
-    plotData(X[:, 1:3], y)
+    # util.plotData(X[:, 1:3], y)
 
     if X.shape[1] <= 3:
         # Only need 2 points to define a line, so choose two endpoints
@@ -41,7 +42,7 @@ def plotDecisionBoundary(theta, X, y):
             for j, vj in enumerate(v):
                 z[i, j] = np.dot(mapFeature(np.array([[ui]]),
                                             np.array([[vj]])), theta.T)
-        plt.contour(u, v, z.T)
+        plt.contour(u, v, z.T, levels=0)
         plt.xlim([-1, 1.25])
         plt.ylim([-1, 1.25])
         plt.title('lambda = %0.4f' % lam)
@@ -62,25 +63,46 @@ print('')
 # Reformat data & plot
 X = data[:, :-1]
 y = data[:, -1, None]
-plotData(X, y)
+util.plotData(X, y)
+wait = input('Program paused. Press enter to continue.\n')
 
 # %% Optimize using fmin_bfgs
 # Initial condition
-X = mapFeature(X[:, [0]], X[:, [1]])
-theta_init = np.zeros([X.shape[1], 1])
+print('Training my logistic regression.\n')
+Xmap = mapFeature(X[:, [0]], X[:, [1]])
+theta_init = np.zeros([Xmap.shape[1], 1])
 lam = 1
-cost = costFunc(theta_init, X, y, lam)
-grad = gradFunc(theta_init, X, y, lam)
+cost = myLogReg.costFunc(theta_init, Xmap, y, lam)
+grad = myLogReg.gradFunc(theta_init, Xmap, y, lam)
 
 # Optimize
-theta = fmin_bfgs(costFunc,
-                  theta_init,
-                  gradFunc,
-                  args=(X, y, lam),
-                  maxiter=400)
+theta1 = fmin_bfgs(myLogReg.costFunc,
+                   theta_init,
+                   myLogReg.gradFunc,
+                   args=(Xmap, y, lam),
+                   maxiter=400)
 
 # %% Show results
-plotDecisionBoundary(theta, X, y)
-print('\nTrained theta - first 5 values: \n', theta[:5])
-p = predict(theta, X)
-print('Train Accuracy: %0.2f\n' % np.mean(p == y))
+plotDecisionBoundary(theta1, Xmap, y, lam)
+print('Trained theta - first 5 values: \n', theta1[:5])
+p1 = myLogReg.predict(theta1, Xmap)
+print('Train Accuracy: %0.2f\n' % np.mean(p1 == y))
+plt.show()
+wait = input('Program paused. Press enter to continue.\n')
+
+# %% Try using sci-kit learn & show results
+print('Training scikit-learn model.\n')
+util.plotData(X, y)
+
+reg = LogisticRegression(C=1/lam, max_iter=400)
+y = y.reshape(-1,)
+reg = reg.fit(Xmap, y)
+theta2 = np.copy(reg.coef_.reshape(-1,))
+theta2[0] = reg.intercept_
+p2 = reg.predict(Xmap)
+
+print('Trained theta - first 5 values: \n', theta2[:5])
+plotDecisionBoundary(theta2, Xmap, y, lam)
+# print('Train Accuracy: %0.2f\n' % reg.score(Xmap, y))
+print('Train Accuracy: %0.2f\n' % np.mean(p2 == y))
+plt.show()
