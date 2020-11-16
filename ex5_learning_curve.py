@@ -133,6 +133,5 @@ plt.ylabel('Error')
 plt.show()
 
 print('Lambda | Training error | Validation error:')
-for n in range(len(lambda_vec)):
-    print('%0.4f | %0.4f | %0.4f' % (lambda_vec[n], error_train[n], error_val[n]))
-    
+for n, lam in enumerate(lambda_vec):
+    print('%0.4f | %0.4f | %0.4f' % (lam, error_train[n], error_val[n]))
